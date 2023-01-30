@@ -16,7 +16,6 @@ export function init() {
       let todoText: string = (
         document.getElementById("newTodoText") as HTMLInputElement
       ).value;
-      console.log("Todos when creating", todos);
 
       exports.createNewTodo(todoText, todos);
     }
@@ -25,7 +24,6 @@ export function init() {
 
 
 export function createNewTodo(todoText: string, todos: Todo[]) {
-  console.log("Todos when creating", todos);
   let result = addTodo(todoText, todos);
 
   if (result.success) {
@@ -85,5 +83,4 @@ export function clearTodos(todos: Todo[]) {
   createHtml(todos);
 }
 
-//createHtml(todos);
 init()
