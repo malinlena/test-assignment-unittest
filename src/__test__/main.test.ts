@@ -3,8 +3,6 @@
 */
 
 import * as main from '../ts/main';
-import * as func from '../ts/functions';
-import { Todo } from '../ts/models/Todo';
 
 beforeEach(() => {
 	document.body.innerHTML = '';
@@ -27,15 +25,40 @@ test('Should clear todos', () => {
 
 test('Should create new todo', () => {
   document.body.innerHTML = `<form id="newTodoForm">
-  <input type="text" id="newTodoText" />
-  <input type="submit" value="Lägg till" />
+  <div>
+    <input type="text" id="newTodoText" />
+    <button>Skapa</button>
+    <button type="button" id="clearTodos">Rensa lista</button>
+  </div>
+  <div id="error" class="error"></div>
 </form>`;
-  const todos: Todo[] = [{ text: 'Köp mjölk', done: true }, {text: 'Drick mjölk', done: true}];
+
+  const todos = [{ text: 'Köp mjölk', done: true }, {text: 'Drick mjölk', done: true}];
+
   const spy = jest.spyOn(main, "createNewTodo").mockReturnValue();
   main.init();
+
   const form = document.getElementById('newTodoForm') as HTMLFormElement;
-  const input = document.getElementById('newTodoText') as HTMLInputElement;
-  input.value = 'Köp mjölk';
-  form.dispatchEvent(new Event('submit'));
+  form.submit();
+  
   expect(spy).toHaveBeenCalled();
 })
+
+test('Should test toggle todo', () => {
+  document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
+  const todos = [{ text: 'Köp mjölk', done: true }, {text: 'Drick mjölk', done: true}];
+  const spy = jest.spyOn(main, 'toggleTodo');
+  main.createHtml(todos);
+  const listElement = document.querySelector('li');
+  listElement?.click();
+  expect(spy).toHaveBeenCalled();
+}); 
+
+test('Should test displayError', () => {
+  document.body.innerHTML = `<div id="error" class="error"></div>`;
+  const spy = jest.spyOn(main, 'displayError');
+  main.displayError('Error', true);
+  const errorElement = document.getElementById('error');
+  expect(errorElement?.innerHTML).toBe('Error');
+
+});

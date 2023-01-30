@@ -5,7 +5,7 @@ let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
 
 export function init() {
   document.getElementById("clearTodos")?.addEventListener("click", () => {
-    clearTodos(todos);
+    exports.clearTodos(todos);
   });
 
   (document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
@@ -18,13 +18,14 @@ export function init() {
       ).value;
       console.log("Todos when creating", todos);
 
-      createNewTodo(todoText, todos);
+      exports.createNewTodo(todoText, todos);
     }
   );
 }
 
 
 export function createNewTodo(todoText: string, todos: Todo[]) {
+  console.log("Todos when creating", todos);
   let result = addTodo(todoText, todos);
 
   if (result.success) {
@@ -53,7 +54,7 @@ export function createHtml(todos: Todo[]) {
     li.classList.add("todo__text");
     li.innerHTML = todos[i].text;
     li.addEventListener("click", () => {
-      toggleTodo(todos[i]);
+      exports.toggleTodo(todos[i]);
     });
 
     todosContainer.appendChild(li);
@@ -85,3 +86,4 @@ export function clearTodos(todos: Todo[]) {
 }
 
 //createHtml(todos);
+init()
